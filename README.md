@@ -14,5 +14,3 @@
 - ⚡ Fun fact **founder of blooop.io**
 
 </p>
-
-<h3 align="left">Languages and Tools:</h3>
