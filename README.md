@@ -1,5 +1,5 @@
 <h1 align="center">Hi , I'm Emily</h2>
-<h3 align="center">A British PhD student looking for IrnBru in Toronto/Seoul</h3>
+<h3 align="center">A British PhD student looking for IrnBru in Canada</h3>
 
 - 🔭 I’m currently working on **blooop** & **AstroLedger**
 
