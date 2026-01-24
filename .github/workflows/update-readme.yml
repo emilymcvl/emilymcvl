@@ -1,40 +1,40 @@
-name: Update README
-
+name: README build
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
-  workflow_dispatch:  # Allows you to manually trigger it
   push:
     branches:
-      - main  # Runs when you push to main branch
-
+      - main
+  schedule:
+    - cron: "0 4 * * *"
 jobs:
-  update-readme:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/checkout@v2
         with:
-          python-version: '3.x'
-      
+          fetch-depth: 1
+      - name: Get Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Configure pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/cache/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
       - name: Install dependencies
-        run: |
-          pip install python-dateutil requests lxml
-      
-      - name: Run README update script
+        run: python -m pip install -r cache/requirements.txt
+      - name: Update README file
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          USER_NAME: emilymcvl
-        run: |
-          python main.py
-      
-      - name: Commit and push if changed
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update README stats" && git push)
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: python today.py
+      - name: Commit
+        run: |-
+          git add .
+          git diff
+          git config --global user.email "github-actions-bot@andrew6rant.github.io"
+          git config --global user.name "Andrew6rant/GitHub-Actions-Bot"
+          git commit -m "Updated README" -a || echo "No changes to commit"
+          git push
