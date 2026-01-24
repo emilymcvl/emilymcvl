@@ -5,7 +5,7 @@ on:
       - main
   schedule:
     - cron: "0 4 * * *"
-  workflow_dispatch:  # This allows manual triggering!
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +23,6 @@ jobs:
       - name: Update README file
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          USER_NAME: emilymcvl
         run: python today.py
       - name: Commit
         run: |-
